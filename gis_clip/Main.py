@@ -8,8 +8,8 @@ from ClippingManager import ClippingManager
 from VectorLayer import VectorLayer
 
 def main():
-    clippingMask_layer_files = ["../Data/Einzugsgebiete/ezg.shp"]
-    toClip_layer_files = ["../Data/NatVeg/opovbona.shp"]
+    clippingMask_layer_files = ["../Data/Einzugsgebiete/ezg2.shp"]
+    toClip_layer_files = ["../Data/NatVeg/opovbona2.shp"]
     
     clippingMask_layer = []
     toClip_layer = []
