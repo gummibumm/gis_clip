@@ -10,16 +10,16 @@ from UI import Main_ui
 from PyQt4 import QtCore, QtGui, uic
 import sys
 
-def main():
 
+
+def main():
     if __name__ == '__main__':
         app = QtGui.QApplication(sys.argv)
         window = Main_ui.Main_ui()
-        sys.exit(app.exec_())    
-    
-    clippingMask_layer_files = ["../Data/Einzugsgebiete/ezg2.shp"]
-    toClip_layer_files = ["../Data/NatVeg/opovbona2.shp"]
-    
+        sys.exit(app.exec_())
+
+@staticmethod
+def startClipping(clippingMask_layer_files, toClip_layer_files):
     clippingMask_layer = []
     toClip_layer = []
     
@@ -31,6 +31,7 @@ def main():
     
     clippingManager = ClippingManager(toClip_layer, clippingMask_layer)
     clippingManager.Clip()
+    
     
 main()
     
