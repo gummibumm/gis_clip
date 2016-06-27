@@ -48,35 +48,35 @@ class VectorLayer(object):
         srs = osr.SpatialReference()
         srs.ImportFromEPSG(31467)
         
-        #self._layer.SetSpatialRef(srs)
-        #clippingMask._layer.SetSpatialRef(srs)
-        print "first ref: " + str(self._layer.GetSpatialRef())
-        print "second ref: " + str(clippingMask._layer.GetSpatialRef())
-        
-        resultLayer = self.output_datasource.CreateLayer("clipping_result", srs, ogr.wkbPolygon) # geom_type = self._layer.GetGeomType())
-
+        resultLayer = self.output_datasource.CreateLayer("clipping_result", 
+                                                         srs, ogr.wkbPolygon)
         clippingMask._layer.SetAttributeFilter("NAME = 'Schwippe'")
-        print "mask: " + str(self._layer.GetFeatureCount())
-        print "ezg: " + str(clippingMask._layer.GetFeatureCount())
         
+        feature_defn = self._layer.GetLayerDefn()
+        attr_list = [feature_defn.GetFieldDefn(i).GetName() for i in
+            range(feature_defn.GetFieldCount())]
+        attr_list_types = [feature_defn.GetFieldDefn(i).GetType() for i in
+            range(feature_defn.GetFieldCount())]
+            
+        for i in range(len(attr_list)):
+            field = ogr.FieldDefn(attr_list[i], attr_list_types[i])
+            resultLayer.CreateField(field)
+            
         for feature1 in clippingMask._layer:
             geom1 = feature1.GetGeometryRef()
             for feature2 in self._layer:
                 geom2 = feature2.GetGeometryRef()
+                
                 # select only the intersections
                 if geom1.Intersects(geom2):
                     print "Intersected"
                     intersection = geom1.Intersection(geom2)
                     dstfeature = ogr.Feature(resultLayer.GetLayerDefn())
                     dstfeature.SetGeometry(intersection)
+                    for attr in attr_list:
+                        field = feature2.GetField(str(attr))
+                        dstfeature.SetField(attr, field)
                     resultLayer.CreateFeature(dstfeature)
-        
-        
-        # self._layer.Clip(clippingMask._layer, result_layer = resultLayer)
-        # one.Clip(two, result_layer = resultLayer)
-        # intersection = one.Intersection(two)
-        
-        
             
         # close and save new shapefile
         self.output_datasource.Destroy()

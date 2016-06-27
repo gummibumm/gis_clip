@@ -6,8 +6,17 @@ Created on Mon Jun 27 09:05:30 2016
 """
 from ClippingManager import ClippingManager
 from VectorLayer import VectorLayer
+from UI import Main_ui
+from PyQt4 import QtCore, QtGui, uic
+import sys
 
 def main():
+
+    if __name__ == '__main__':
+        app = QtGui.QApplication(sys.argv)
+        window = Main_ui.Main_ui()
+        sys.exit(app.exec_())    
+    
     clippingMask_layer_files = ["../Data/Einzugsgebiete/ezg2.shp"]
     toClip_layer_files = ["../Data/NatVeg/opovbona2.shp"]
     
