@@ -37,9 +37,11 @@ class VectorLayer(object):
     def write(outputFilename, dataType = "ESRI Shapefile"):
         NotImplemented
         
-    def clipLayer(self, clippingMask, dataType = "ESRI Shapefile"):
-        print clippingMask._layer.GetFeatureCount()
-        print self._layer.GetFeatureCount()
+    def clipLayer(self, clippingMask, filter_name, mask_epsg, toClip_transform,
+                  dataType = "ESRI Shapefile"):
+        ##
+        ## Prepare out
+        ##
         # driver for output
         self.output_driver = ogr.GetDriverByName(dataType)
         filename, file_extension = os.path.splitext(self._path)
@@ -52,11 +54,11 @@ class VectorLayer(object):
                 os.remove(i)
         
         # output files
-        self.output_datasource = self.output_driver.CreateDataSource(new_filename + file_extension) #self.input_datasource.GetName())        
-
-        srs = osr.SpatialReference()
-        srs.ImportFromEPSG(31467)
+        self.output_datasource = self.output_driver.CreateDataSource(new_filename + 
+            "_" + ''.join([i for i in filter_name if i.isalpha()]) + file_extension) #self.input_datasource.GetName())        
         
+        srs = osr.SpatialReference()
+        srs.ImportFromEPSG(mask_epsg)
         resultLayer = self.output_datasource.CreateLayer("clipping_result", 
                                                          srs, ogr.wkbPolygon)
         
@@ -69,11 +71,13 @@ class VectorLayer(object):
         for i in range(len(attr_list)):
             field = ogr.FieldDefn(attr_list[i], attr_list_types[i])
             resultLayer.CreateField(field)
-        counter = 0
+
+        ##
+        ## actual clipping
+        ##
         clippingMask._layer.ResetReading()
         for feature1 in clippingMask._layer:
             self._layer.ResetReading()
-            counter += 1
             # print len(clippingMask._layer)
             geom1 = feature1.GetGeometryRef()
             # print "Clippingmask: ", clippingMask._layer.GetFeatureCount()
@@ -81,6 +85,7 @@ class VectorLayer(object):
             
             for feature2 in self._layer:
                 geom2 = feature2.GetGeometryRef()
+                geom2.Transform(toClip_transform)
                 
                 # select only the intersections
                 if geom2.Intersects(geom1):
@@ -92,7 +97,6 @@ class VectorLayer(object):
                         field = feature2.GetField(str(attr))
                         dstfeature.SetField(attr, field)
                     resultLayer.CreateFeature(dstfeature.Clone())
-        print "Counter: ", counter
             
         # close and save new shapefile
         self.output_datasource.Destroy()

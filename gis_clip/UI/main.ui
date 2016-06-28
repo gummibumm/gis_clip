@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>483</width>
+    <width>559</width>
     <height>712</height>
    </rect>
   </property>
@@ -42,12 +42,38 @@
               </widget>
              </item>
              <item>
-              <widget class="QListView" name="listView_toClip"/>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Input files:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_2">
+                 <property name="text">
+                  <string>Projection (EPSG):</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QListView" name="listView_toClip"/>
+               </item>
+               <item>
+                <widget class="QListView" name="listView_EPSG"/>
+               </item>
+              </layout>
              </item>
             </layout>
             <zorder>layer_clip_btn</zorder>
             <zorder>clip_path</zorder>
-            <zorder>listView_toClip</zorder>
+            <zorder>horizontalLayoutWidget</zorder>
+            <zorder>horizontalLayoutWidget_2</zorder>
            </widget>
           </item>
          </layout>
@@ -74,6 +100,16 @@
               <widget class="QPushButton" name="layer_mask_btn">
                <property name="text">
                 <string>Choose Mask Layer</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="textEdit_maskEPSG">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -126,7 +162,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>483</width>
+     <width>559</width>
      <height>21</height>
     </rect>
    </property>

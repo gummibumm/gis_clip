@@ -8,6 +8,7 @@ Created on Mon Jun 27 16:25:08 2016
 from PyQt4 import QtCore, QtGui, uic
 import glob
 import os
+from osgeo import osr
 from ClippingManager import ClippingManager
 
  
@@ -29,14 +30,22 @@ class Main_ui(QtGui.QMainWindow, form_class):
 		
         if dlg.exec_():           
            self.clip_path.setText(dlg.directory().path())
-           list = self.listView_toClip
-           self.model = QtGui.QStandardItemModel(list)
-           for file in glob.glob(dlg.directory().path() + "/*.shp"):
-               item = QtGui.QStandardItem(os.path.basename(file))
-               item.setCheckable(True)
-               self.model.appendRow(item)
-           list.setModel(self.model)
-           list.show()
+           list_toClip = self.listView_toClip
+           list_EPSG = self.listView_EPSG
+           self.model_toClip = QtGui.QStandardItemModel(list_toClip)
+           self.model_EPSG = QtGui.QStandardItemModel(list_EPSG)
+           for file_name in glob.glob(dlg.directory().path() + "/*.shp"):
+               item_toClip = QtGui.QStandardItem(os.path.basename(file_name))
+               item_toClip.setCheckable(True)
+               item_EPSG = QtGui.QStandardItem(self.getEPSG(os.path.basename(file_name)))
+               item_EPSG.setEditable(True)
+               item_EPSG.setBackground(QtGui.QBrush(QtGui.QColor(240, 240, 240)))
+               self.model_toClip.appendRow(item_toClip)
+               self.model_EPSG.appendRow(item_EPSG)
+           list_toClip.setModel(self.model_toClip)
+           list_EPSG.setModel(self.model_EPSG)
+           list_toClip.show()
+           list_EPSG.show()
                
            
     def btn_toMask_clicked(self):
@@ -48,12 +57,29 @@ class Main_ui(QtGui.QMainWindow, form_class):
            
     def btn_clip_clicked(self):
         clippingMask_layer_files = []
-        for row in range(self.model.rowCount()):
-            item = self.model.item(row)
+        clipping_epsg = []
+        for row in range(self.model_toClip.rowCount()):
+            item = self.model_toClip.item(row)
             if item.checkState() == QtCore.Qt.Checked:
                 clippingMask_layer_files.append(
                     self.clip_path.text().encode('utf8') + "/" +
                     item.text().encode('utf8'))
+                clipping_epsg.append(int(self.model_EPSG.item(row).text().encode('utf8')))
         mask_layer_file = self.mask_path.text().encode('utf8')
         filter_string = self.filter_textEdit.toPlainText()
-        ClippingManager.startClipping(clippingMask_layer_files, mask_layer_file, filter_string)
+        mask_epsg = int(self.textEdit_maskEPSG.toPlainText())
+        ClippingManager.startClipping(clippingMask_layer_files, mask_layer_file, 
+                                      filter_string, clipping_epsg, mask_epsg)
+        
+    def getEPSG(self, file_name):
+        full_path = self.clip_path.text().encode('utf8') + "/" + file_name.split(".")[0] + ".prj"
+        if os.path.exists(full_path):
+            source = osr.SpatialReference()
+            with open(full_path, "r") as fs:
+                source.ImportFromWkt(fs.read())
+                fs.close()
+            epsg = source.GetAttrValue("AUTHORITY", 1)
+            if epsg == "":
+                return "Unknown"
+            return epsg
+        return "NaN"
