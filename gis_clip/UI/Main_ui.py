@@ -56,6 +56,7 @@ class Main_ui(QtGui.QMainWindow, form_class):
             self.mask_path.setText(filenames[0].encode('utf8'))
            
     def btn_clip_clicked(self):
+        self.progressBar.setValue(0)
         clippingMask_layer_files = []
         clipping_epsg = []
         for row in range(self.model_toClip.rowCount()):
@@ -69,7 +70,7 @@ class Main_ui(QtGui.QMainWindow, form_class):
         filter_string = self.filter_textEdit.toPlainText()
         mask_epsg = int(self.textEdit_maskEPSG.toPlainText())
         ClippingManager.startClipping(clippingMask_layer_files, mask_layer_file, 
-                                      filter_string, clipping_epsg, mask_epsg)
+                                      filter_string, clipping_epsg, mask_epsg, self.progressBar)
         
     def getEPSG(self, file_name):
         full_path = self.clip_path.text().encode('utf8') + "/" + file_name.split(".")[0] + ".prj"

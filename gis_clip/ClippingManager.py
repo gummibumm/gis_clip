@@ -42,7 +42,7 @@ class ClippingManager:
                 
     @staticmethod
     def startClipping(toClip_layer_files, clippingMask_layer_file, filter_string, 
-                      clipping_epsg, mask_epsg):
+                      clipping_epsg, mask_epsg, progressBar):
         toClip_layer = []
         layer_transformations = []
         clippingMask_layer = VectorLayer(clippingMask_layer_file)
@@ -56,8 +56,9 @@ class ClippingManager:
             current_srs.ImportFromEPSG(clipping_epsg[layer_counter])
             current_transform = osr.CoordinateTransformation(current_srs, project_srs)
             layer_transformations.append(current_transform)
-            toClip_layer.append(VectorLayer(toClip_layer_file))
+            toClip_layer.append(currentLayer)
             layer_counter += 1
+            progressBar.setValue((layer_counter / len(toClip_layer_files)) * 100)
         
         clippingManager = ClippingManager(toClip_layer, clippingMask_layer, 
                                           filter_string, layer_transformations,

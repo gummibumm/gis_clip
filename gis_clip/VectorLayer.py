@@ -17,7 +17,7 @@ class VectorLayer(object):
         self.output_dir = "../result"
         if os.path.isdir(self.output_dir) != True:
             os.mkdir(self.output_dir)
-        
+        self.fr_point = ogr.CreateGeometryFromWkt("POINT(3414520.733 5319001.954)")        
         
     def read(self, dataType = "ESRI Shapefile"):
         # shapefile to read
@@ -71,6 +71,10 @@ class VectorLayer(object):
         for i in range(len(attr_list)):
             field = ogr.FieldDefn(attr_list[i], attr_list_types[i])
             resultLayer.CreateField(field)
+        area_field = ogr.FieldDefn("AREA", ogr.OFTReal)
+        resultLayer.CreateField(area_field)
+        distance_field = ogr.FieldDefn("DISTANCE", ogr.OFTReal)
+        resultLayer.CreateField(distance_field)
 
         ##
         ## actual clipping
@@ -96,6 +100,13 @@ class VectorLayer(object):
                     for attr in attr_list:
                         field = feature2.GetField(str(attr))
                         dstfeature.SetField(attr, field)
+                    dstfeature.SetField("AREA", intersection.Area())
+                    
+                    point_srs = osr.SpatialReference()
+                    point_srs.ImportFromEPSG(31467)
+                    point_transform = osr.CoordinateTransformation(point_srs, srs)
+                    self.fr_point.Transform(point_transform)
+                    dstfeature.SetField("DISTANCE", intersection.Distance(self.fr_point))
                     resultLayer.CreateFeature(dstfeature.Clone())
             
         # close and save new shapefile
