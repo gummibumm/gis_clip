@@ -19,17 +19,13 @@ def main():
         sys.exit(app.exec_())
 
 @staticmethod
-def startClipping(clippingMask_layer_files, toClip_layer_files):
-    clippingMask_layer = []
+def startClipping(toClip_layer_files, clippingMask_layer_file, filter_string):
     toClip_layer = []
-    
-    for clippingMask_layer_file in clippingMask_layer_files:
-        clippingMask_layer.append(VectorLayer(clippingMask_layer_file))
+    clipMaskLayer = VectorLayer(clippingMask_layer_file)
     for toClip_layer_file in toClip_layer_files:
         toClip_layer.append(VectorLayer(toClip_layer_file))
     
-    
-    clippingManager = ClippingManager(toClip_layer, clippingMask_layer)
+    clippingManager = ClippingManager(toClip_layer, clippingMask_layer, filter_string)
     clippingManager.Clip()
     
     

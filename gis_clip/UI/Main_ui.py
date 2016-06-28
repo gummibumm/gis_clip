@@ -5,10 +5,10 @@ Created on Mon Jun 27 16:25:08 2016
 @author: de.student
 """
 
-import sys
 from PyQt4 import QtCore, QtGui, uic
 import glob
 import os
+from Main import startClipping
 
  
 form_class = uic.loadUiType("./UI/main.ui")[0]                 # Load the UI
@@ -30,12 +30,12 @@ class Main_ui(QtGui.QMainWindow, form_class):
         if dlg.exec_():           
            self.clip_path.setText(dlg.directory().path())
            list = self.listView_toClip
-           model = QtGui.QStandardItemModel(list)
+           self.model = QtGui.QStandardItemModel(list)
            for file in glob.glob(dlg.directory().path() + "/*.shp"):
                item = QtGui.QStandardItem(os.path.basename(file))
                item.setCheckable(True)
-               model.appendRow(item)
-           list.setModel(model)
+               self.model.appendRow(item)
+           list.setModel(self.model)
            list.show()
                
            
@@ -48,12 +48,12 @@ class Main_ui(QtGui.QMainWindow, form_class):
            
     def btn_clip_clicked(self):
         clippingMask_layer_files = []
-        for row in range(self.listView_toClip.model.rowCount()):
-            item = self.listView_toClip.model.item(row)
-            print item.text.encode('utf8')
+        for row in range(self.model.rowCount()):
+            item = self.model.item(row)
             if item.checkState() == QtCore.Qt.Checked:
-                clippingMask_layer_files.append(item.text)
-                
-                
-        print str(clippingMask_layer_files)
-                
+                clippingMask_layer_files.append(
+                    self.clip_path.text().encode('utf8') + "/" +
+                    item.text().encode('utf8'))
+        mask_layer_file = self.mask_path.text().encode('utf8')
+        filter_string = self.filter_textEdit.text()
+        startClipping(clippingMask_layer_files, mask_layer_file, filter_string)

@@ -84,9 +84,5 @@ class VectorLayer(object):
     def setSelection(self, featureName_list):
         self.featureName_list = featureName_list
         
-    def applyFilter(self):
-        # _layer.SetAttributeFilter("Name = 'Mississippi River'")
-        NotImplemented
-        
                 
         

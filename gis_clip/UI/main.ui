@@ -47,8 +47,6 @@
             </layout>
             <zorder>layer_clip_btn</zorder>
             <zorder>clip_path</zorder>
-            <zorder>layer_clip_btn</zorder>
-            <zorder>clip_path</zorder>
             <zorder>listView_toClip</zorder>
            </widget>
           </item>
@@ -86,7 +84,14 @@
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_4">
                 <item>
-                 <widget class="QPlainTextEdit" name="plainTextEdit"/>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;e.g. multiple shape: &lt;br/&gt;&amp;quot;NAME&amp;quot; in ('Schwippe', 'Sauer')&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPlainTextEdit" name="filter_textEdit"/>
                 </item>
                </layout>
               </widget>
@@ -115,9 +120,6 @@
      </layout>
     </item>
    </layout>
-   <zorder>mask_path</zorder>
-   <zorder>verticalLayoutWidget_3</zorder>
-   <zorder>pushButton_3</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
