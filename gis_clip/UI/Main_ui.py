@@ -8,7 +8,7 @@ Created on Mon Jun 27 16:25:08 2016
 from PyQt4 import QtCore, QtGui, uic
 import glob
 import os
-from Main import startClipping
+from ClippingManager import ClippingManager
 
  
 form_class = uic.loadUiType("./UI/main.ui")[0]                 # Load the UI
@@ -55,5 +55,5 @@ class Main_ui(QtGui.QMainWindow, form_class):
                     self.clip_path.text().encode('utf8') + "/" +
                     item.text().encode('utf8'))
         mask_layer_file = self.mask_path.text().encode('utf8')
-        filter_string = self.filter_textEdit.text()
-        startClipping(clippingMask_layer_files, mask_layer_file, filter_string)
+        filter_string = self.filter_textEdit.toPlainText()
+        ClippingManager.startClipping(clippingMask_layer_files, mask_layer_file, filter_string)
