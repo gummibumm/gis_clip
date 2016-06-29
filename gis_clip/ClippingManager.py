@@ -51,6 +51,7 @@ class ClippingManager:
         for filter_line in filter_lines:
             print "Trying to apply filter: " + filter_line
             # apply filter
+            self.clippingMask_layer._layer.ResetReading()
             self.clippingMask_layer._layer.SetAttributeFilter(str(filter_line))
             transform_counter = 0
             # start clipping for each 
