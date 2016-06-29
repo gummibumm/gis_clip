@@ -72,8 +72,6 @@
             </layout>
             <zorder>layer_clip_btn</zorder>
             <zorder>clip_path</zorder>
-            <zorder>horizontalLayoutWidget</zorder>
-            <zorder>horizontalLayoutWidget_2</zorder>
            </widget>
           </item>
          </layout>
@@ -122,7 +120,7 @@
                 <item>
                  <widget class="QLabel" name="label">
                   <property name="text">
-                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;e.g. multiple shape: &lt;br/&gt;NAME in ('Schwippe', 'Sauer')&lt;/p&gt;&lt;p&gt;(new line for each filter)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;e.g. multiple mask: &lt;br/&gt;NAME in ('Schwippe', 'Sauer')&lt;/p&gt;&lt;p&gt;e.g. single mask:&lt;br/&gt;NAME = 'Schwippe'&lt;/p&gt;&lt;p&gt;(new line for each filter)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                   </property>
                  </widget>
                 </item>
@@ -154,6 +152,16 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="copyright">
+      <property name="text">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;The MIT License (MIT)&lt;/span&gt; - Copyright (c) 2016 Ruben Beck, Marcel Gangwisch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
