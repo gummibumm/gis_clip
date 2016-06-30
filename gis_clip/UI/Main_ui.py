@@ -98,7 +98,7 @@ class Main_ui(QtGui.QMainWindow, form_class):
         # get the epsg number for the mask -> epsg gets main epsg for all results
         mask_epsg = int(self.textEdit_maskEPSG.toPlainText())
         # now start the clipping procedure
-        ClippingManager.startClipping(clippingMask_layer_files, mask_layer_file, 
+        ClippingManager.preprocessInput(clippingMask_layer_files, mask_layer_file, 
                                       filter_string, clipping_epsg, mask_epsg, self.progressBar)
         
     def getEPSG(self, file_name):

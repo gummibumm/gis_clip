@@ -156,7 +156,7 @@
     <item row="1" column="0">
      <widget class="QLabel" name="copyright">
       <property name="text">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;The MIT License (MIT)&lt;/span&gt; - Copyright (c) 2016 Ruben Beck, Marcel Gangwisch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copyright (c) 2016 Ruben Beck, Marcel Gangwisch&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
